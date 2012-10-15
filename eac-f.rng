@@ -1,0 +1,1339 @@
+<!-- Version 0.2 Salvatore Vassallo
+
+First attemp to create a schema to encode function conforms to ISDF.
+
+This schema is mainly based on EAC-CPF one, see http://eac.staatsbibliothek-berlin.de
+
+
+TODO:
+* classification
+* dates as in EAD (latest proposal)
+* relations
+* alternative set
+
+
+-->
+
+<grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+    ns="https://github.com/svassallo/EAC-F" xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace">
+    <start>
+        <ref name="e.eac-f"/>
+    </start>
+    <define name="e.eac-f">
+        <element a:id="eac-f" name="eac-f">
+            <optional>
+                <ref name="id"/>
+            </optional>
+            <optional>
+                <ref name="lang"/>
+            </optional>
+            <optional>
+                <ref name="base"/>
+            </optional>
+            <ref name="e.control"/>
+            <ref name="e.fDescription"/>
+        </element>
+    </define>
+
+    <!-- Control section -->
+    <div a:documentation="Control">
+
+        <define name="e.control">
+            <element a:id="control" name="control">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="base"/>
+                </optional>
+                <element a:id="recordId" name="recordId">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <data type="NMTOKEN"/>
+                </element>
+                <zeroOrMore>
+                    <element a:id="otherRecordId" name="otherRecordId">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <ref name="m.id"/>
+                    </element>
+                </zeroOrMore>
+                <element a:id="maintenanceStatus" name="maintenanceStatus">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <choice>
+                        <value>revised</value>
+                        <value>deleted</value>
+                        <value>new</value>
+                        <value>deletedSplit</value>
+                        <value>deletedReplaced</value>
+                        <value>cancelled</value>
+                        <value>derived</value>
+                    </choice>
+                </element>
+                <optional>
+                    <element a:id="publicationStatus" name="publicationStatus">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <choice>
+                            <value>inProcess</value>
+                            <value>approved</value>
+                        </choice>
+                    </element>
+                </optional>
+                <ref name="e.maintenanceAgency"/>
+                <optional>
+                    <ref name="e.languageDeclaration"/>
+                </optional>
+                <zeroOrMore>
+                    <ref name="e.conventionDeclaration"/>
+                </zeroOrMore>
+                <zeroOrMore>
+                    <ref name="e.localTypeDeclaration"/>
+                </zeroOrMore>
+                <zeroOrMore>
+                    <ref name="e.localControl"/>
+                </zeroOrMore>
+                <ref name="e.maintenanceHistory"/>
+                <optional>
+                    <ref name="e.sources"/>
+                </optional>
+            </element>
+        </define>
+
+        <define name="e.maintenanceAgency">
+            <element a:id="maintenanceAgency" name="maintenanceAgency">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <element a:id="agencyCode" name="agencyCode">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <ref name="m.data.standardRepository"/>
+                    </element>
+                </optional>
+                <zeroOrMore>
+                    <element a:id="otherAgencyCode" name="otherAgencyCode">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <ref name="a.localType"/>
+                        <data type="NMTOKEN"/>
+                    </element>
+                </zeroOrMore>
+                <element a:id="agencyName" name="agencyName">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <text/>
+                </element>
+                <optional>
+                    <ref name="e.descriptiveNote"/>
+                </optional>
+            </element>
+        </define>
+
+        <define name="e.maintenanceHistory">
+            <element a:id="maintenanceHistory" name="maintenanceHistory">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <oneOrMore>
+                    <element a:id="maintenanceEvent" name="maintenanceEvent">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <optional>
+                            <ref name="lang"/>
+                        </optional>
+                        <element a:id="eventType" name="eventType">
+                            <optional>
+                                <ref name="id"/>
+                            </optional>
+                            <choice>
+                                <value>created</value>
+                                <value>revised</value>
+                                <value>deleted</value>
+                                <value>cancelled</value>
+                                <value>derived</value>
+                                <value>updated</value>
+                            </choice>
+                        </element>
+                        <element a:id="eventDateTime" name="eventDateTime">
+                            <optional>
+                                <ref name="id"/>
+                            </optional>
+                            <optional>
+                                <ref name="lang"/>
+                            </optional>
+                            <optional>
+                                <attribute a:id="standardDateTime" name="standardDateTime">
+                                    <ref name="m.data.standardDateTime"/>
+                                </attribute>
+                            </optional>
+                            <text/>
+                        </element>
+                        <element a:id="agentType" name="agentType">
+                            <optional>
+                                <ref name="id"/>
+                            </optional>
+                            <choice>
+                                <value>human</value>
+                                <value>machine</value>
+                            </choice>
+                        </element>
+                        <element a:id="agent" name="agent">
+                            <optional>
+                                <ref name="id"/>
+                            </optional>
+                            <optional>
+                                <ref name="lang"/>
+                            </optional>
+                            <text/>
+                        </element>
+                        <optional>
+                            <element a:id="eventDesccription" name="eventDescription">
+                                <optional>
+                                    <ref name="id"/>
+                                </optional>
+                                <optional>
+                                    <ref name="lang"/>
+                                </optional>
+                                <text/>
+                            </element>
+                        </optional>
+                    </element>
+                </oneOrMore>
+            </element>
+        </define>
+
+        <define name="e.languageDeclaration">
+            <element a:id="languageDeclaration" name="languageDeclaration">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <ref name="e.language"/>
+                <ref name="e.script"/>
+                <optional>
+                    <ref name="e.descriptiveNote"/>
+                </optional>
+            </element>
+        </define>
+
+        <define name="e.conventionDeclaration">
+            <element a:id="conventionDeclaration" name="conventionDeclaration">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="e.abbreviation"/>
+                </optional>
+                <ref name="e.citation"/>
+                <optional>
+                    <ref name="e.descriptiveNote"/>
+                </optional>
+            </element>
+        </define>
+
+        <define name="e.localTypeDeclaration">
+            <element a:id="localTypeDeclaration" name="localTypeDeclaration">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="e.abbreviation"/>
+                </optional>
+                <ref name="e.citation"/>
+                <optional>
+                    <ref name="e.descriptiveNote"/>
+                </optional>
+            </element>
+        </define>
+
+        <define name="e.abbreviation">
+            <element a:id="abbreviation" name="abbreviation">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <data type="token"/>
+            </element>
+        </define>
+
+        <define name="e.localControl">
+            <element a:id="localControl" name="localControl">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <ref name="a.localType"/>
+                <optional>
+                    <ref name="e.term"/>
+                </optional>
+                <optional>
+                    <choice>
+                        <ref name="e.dateSingle"/>
+                        <ref name="e.dateRange"/>
+                    </choice>
+                </optional>
+            </element>
+        </define>
+
+        <define name="e.sources">
+            <element a:id="sources" name="sources">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="base"/>
+                </optional>
+                <oneOrMore>
+                    <element a:id="source" name="source">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <optional>
+                            <ref name="a.lastDateTimeVerified"/>
+                        </optional>
+                        <optional>
+                            <ref name="simpleLink"/>
+                        </optional>
+                        <oneOrMore>
+                            <element a:id="sourceEntry" name="sourceEntry">
+                                <optional>
+                                    <ref name="id"/>
+                                </optional>
+                                <optional>
+                                    <ref name="m.entryLanguageAttributes"/>
+                                </optional>
+                                <text/>
+                            </element>
+                        </oneOrMore>
+                        <a:documentation>objectXMLWrap and objectBinWrap could be too problematic
+                            (recursion and so on). I cut them out and so sourceEntry should be
+                            mandatory.</a:documentation>
+                        <optional>
+                            <ref name="e.descriptiveNote"/>
+                        </optional>
+                    </element>
+                </oneOrMore>
+            </element>
+        </define>
+
+    </div>
+
+
+
+    <!-- fDescription section -->
+    <define name="e.fDescription">
+        <element a:id="fDescription" name="fDescription">
+            <optional>
+                <ref name="id"/>
+            </optional>
+            <optional>
+                <ref name="lang"/>
+            </optional>
+            <optional>
+                <ref name="base"/>
+            </optional>
+            <ref name="e.identity"/>
+            <optional>
+                <ref name="e.description"/>
+            </optional>
+            <!--
+            <optional>
+                <ref name="e.relations"/>
+            </optional>
+            
+            <optional>
+                <ref name="e.alternativeSet"/>
+            </optional> -->
+        </element>
+    </define>
+
+    <!-- Identity section -->
+    <div a:documentation="Identity">
+
+        <define name="e.identity">
+            <element a:id="identity" name="identity">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="base"/>
+                </optional>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <zeroOrMore>
+                    <element a:id="entityId" name="entityId">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <ref name="m.id"/>
+                    </element>
+                </zeroOrMore>
+                <element a:id="entityType" name="entityType">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <text/>
+                </element>
+                <oneOrMore>
+                    <choice>
+                        <ref name="e.nameEntryParallel"/>
+                        <element a:id="nameEntry" name="nameEntry">
+                            <optional>
+                                <ref name="id"/>
+                            </optional>
+                            <ref name="m.entryLanguageAttributes"/>
+                            <optional>
+                                <ref name="a.localType"/>
+                            </optional>
+                            <oneOrMore>
+                                <ref name="e.part"/>
+                            </oneOrMore>
+                            <optional>
+                                <ref name="e.useDates"/>
+                            </optional>
+                            <ref name="m.nameEntryAuthorizedorAlternative"/>
+                        </element>
+                    </choice>
+                </oneOrMore>
+                <!-- TODO add classification -->
+                <optional>
+                    <ref name="e.descriptiveNote"/>
+                </optional>
+            </element>
+        </define>
+
+        <define name="e.part">
+            <element a:id="part" name="part">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <text/>
+            </element>
+        </define>
+
+        <define name="e.useDates">
+            <element a:id="useDates" name="useDates">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <ref name="m.dates"/>
+            </element>
+        </define>
+
+        <define name="e.nameEntryParallel">
+            <element a:id="nameEntryParallel" name="nameEntryParallel">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <ref name="m.nameEntryInParallel"/>
+                <oneOrMore>
+                    <ref name="m.nameEntryInParallel"/>
+                </oneOrMore>
+                <optional>
+                    <ref name="e.useDates"/>
+                </optional>
+                <ref name="m.nameEntryAuthorizedorAlternative"/>
+            </element>
+        </define>
+
+        <define name="m.nameEntryInParallel">
+            <element a:id="nameEntryInParallel" name="nameEntry">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <ref name="m.entryLanguageAttributes"/>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <oneOrMore>
+                    <ref name="e.part"/>
+                </oneOrMore>
+                <zeroOrMore>
+                    <element a:id="preferredForm" name="preferredForm">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <data type="NMTOKEN">
+                            <!-- NMTOKEN instead of maintenance agency code constraints because the
+code may be a non-conforming, i.e. otherAgencyCode -->
+                        </data>
+                    </element>
+                </zeroOrMore>
+            </element>
+        </define>
+
+        <define name="m.nameEntryAuthorizedorAlternative">
+            <zeroOrMore>
+                <choice>
+                    <element a:id="authorizedForm" name="authorizedForm">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <data type="NMTOKEN"/>
+                    </element>
+                    <element a:id="alternativeForm" name="alternativeForm">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <data type="NMTOKEN"/>
+                    </element>
+                </choice>
+            </zeroOrMore>
+        </define>
+    </div>
+
+    <!-- Description -->
+    <div a:documentation="Description">
+
+        <define name="e.description">
+            <element a:id="description" name="description">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="base"/>
+                </optional>
+                <optional>
+                    <ref name="e.durationDates"/>
+                </optional>
+                <zeroOrMore>
+                    <choice>
+                        <ref name="e.localDescription"/>
+                        <ref name="e.localDescriptions"/>
+                        <ref name="e.legislation"/>
+                        <ref name="e.legislations"/>
+                        <ref name="e.purpose"/>
+                    </choice>
+                </zeroOrMore>
+                <zeroOrMore>
+                    <ref name="e.history"/>
+                </zeroOrMore>
+                <!-- Todo eac-cpf:bioghist is more similar to eac-f:description or to eac-f:history? -->
+            </element>
+        </define>
+
+        <define name="e.durationDates">
+            <element a:id="durationDates" name="durationDates">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <ref name="m.dates"/>
+                <optional>
+                    <ref name="e.descriptiveNote"/>
+                </optional>
+            </element>
+        </define>
+
+        <div a:documentation="Plural Versions">
+            <define name="e.localDescriptions">
+                <element a:id="localDescriptions" name="localDescriptions">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <ref name="a.localType"/>
+                    <choice>
+                        <group>
+                            <oneOrMore>
+                                <ref name="e.localDescription"/>
+                            </oneOrMore>
+                            <optional>
+                                <ref name="e.descriptiveNote"/>
+                            </optional>
+                        </group>
+                        <zeroOrMore>
+                            <ref name="m.discursiveSet"/>
+                        </zeroOrMore>
+                    </choice>
+                </element>
+            </define>
+            <define name="e.legislations">
+                <element a:id="legislations" name="legislations">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <choice>
+                        <group>
+                            <oneOrMore>
+                                <ref name="e.legislation"/>
+                            </oneOrMore>
+                            <optional>
+                                <ref name="e.descriptiveNote"/>
+                            </optional>
+                        </group>
+                        <zeroOrMore>
+                            <ref name="m.discursiveSet"/>
+                        </zeroOrMore>
+                    </choice>
+                </element>
+            </define>
+
+            <define name="m.discursiveSet">
+                <choice>
+                    <ref name="e.p"/>
+                    <ref name="e.outline"/>
+                    <ref name="e.list"/>
+                    <ref name="e.citation"/>
+                </choice>
+            </define>
+        </div>
+
+        <div a:documentation="Singular Version">
+            <define name="e.placeEntry">
+                <element a:id="placeEntry" name="placeEntry">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="m.entryLanguageAttributes"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <optional>
+                        <attribute a:id="countryCode" name="countryCode">
+                            <choice>
+                                <data type="string">
+                                    <param name="pattern">[A-Z]{2}</param>
+                                </data>
+                                <data type="string">
+                                    <param name="pattern">[A-Z]{4}</param>
+                                </data>
+                            </choice>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <ref name="a.vocabularySource"/>
+                    </optional>
+                    <optional>
+                        <attribute a:id="accuracy" name="accuarcy">
+                            <text/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <ref name="m.geographicalCoordinates"/>
+                    </optional>
+                    <text/>
+                </element>
+            </define>
+
+            <define name="e.localDescription">
+                <element a:id="localDescription" name="localDescription">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <ref name="a.localType"/>
+                    <ref name="m.simpleDescription"/>
+                </element>
+            </define>
+            <define name="e.legislation">
+                <element a:id="legislation" name="legislation">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <ref name="m.simpleDescription"/>
+                </element>
+            </define>
+
+            <define name="m.simpleDescription">
+                <optional>
+                    <ref name="e.term"/>
+                </optional>
+                <zeroOrMore>
+                    <ref name="e.placeEntry"/>
+                </zeroOrMore>
+                <optional>
+                    <ref name="m.dates"/>
+                </optional>
+                <optional>
+                    <ref name="e.citation"/>
+                </optional>
+                <optional>
+                    <ref name="e.descriptiveNote"/>
+                </optional>
+            </define>
+
+            <define name="e.purpose">
+                <element a:id="purpose" name="purpose">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <zeroOrMore>
+                        <ref name="m.discursiveSet"/>
+                    </zeroOrMore>
+                </element>
+            </define>
+
+            <define name="e.history">
+                <element a:id="history" name="history">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <optional>
+                        <ref name="e.abstract"/>
+                    </optional>
+                    <zeroOrMore>
+                        <choice>
+                            <ref name="e.chronList"/>
+                            <ref name="e.list"/>
+                            <ref name="e.p"/>
+                            <ref name="e.outline"/>
+                            <ref name="e.citation"/>
+                        </choice>
+                    </zeroOrMore>
+                </element>
+            </define>
+
+            <define name="e.abstract">
+                <element a:id="abstract" name="abstract">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <ref name="m.mixedContent"/>
+                </element>
+            </define>
+        </div>
+    </div>
+
+
+    <!-- Shared -->
+    <div a:documentation="Shared">
+        <div a:documentation="Dates">
+
+            <define name="a.lastDateTimeVerified">
+                <attribute a:id="lastDateTimeVerified" name="lastDateTimeVerified">
+                    <ref name="m.data.standardDateTime"/>
+                </attribute>
+            </define>
+
+            <define name="m.data.standardDateTime">
+                <choice>
+                    <data type="date"/>
+                    <data type="gYear"/>
+                    <data type="gYearMonth"/>
+                    <data type="dateTime"/>
+                </choice>
+            </define>
+
+            <define name="m.data.standardDate">
+                <choice>
+                    <data type="date"/>
+                    <data type="gYear"/>
+                    <data type="gYearMonth"/>
+                </choice>
+            </define>
+
+            <define name="e.dateSingle">
+                <element a:id="dateSingle" name="dateSingle">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <ref name="m.dateSingle"/>
+                </element>
+            </define>
+
+            <define name="m.dateSingle">
+                <optional>
+                    <attribute a:id="standardDate" name="standardDate">
+                        <ref name="m.data.standardDate"/>
+                    </attribute>
+                </optional>
+                <optional>
+                    <attribute a:id="notBefore" name="notBefore">
+                        <ref name="m.data.standardDate"/>
+                    </attribute>
+                </optional>
+                <optional>
+                    <attribute a:id="notAfter" name="notAfter">
+                        <ref name="m.data.standardDate"/>
+                    </attribute>
+                </optional>
+                <text/>
+            </define>
+
+            <define name="e.dateRange">
+                <element a:id="dateRange" name="dateRange">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <optional>
+                        <element a:id="fromDate" name="fromDate">
+                            <optional>
+                                <ref name="id"/>
+                            </optional>
+                            <optional>
+                                <ref name="lang"/>
+                            </optional>
+                            <ref name="m.dateSingle"/>
+                        </element>
+                    </optional>
+                    <optional>
+                        <element a:id="toDate" name="toDate">
+                            <optional>
+                                <ref name="id"/>
+                            </optional>
+                            <optional>
+                                <ref name="lang"/>
+                            </optional>
+                            <ref name="m.dateSingle"/>
+                        </element>
+                    </optional>
+                </element>
+            </define>
+
+            <define name="e.dateSet">
+                <element a:id="dateSet" name="dateSet">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <choice>
+                        <ref name="e.dateSingle"/>
+                        <ref name="e.dateRange"/>
+                    </choice>
+                    <oneOrMore>
+                        <choice>
+                            <ref name="e.dateSingle"/>
+                            <ref name="e.dateRange"/>
+                        </choice>
+                    </oneOrMore>
+                </element>
+            </define>
+
+            <define name="m.dates">
+                <choice>
+                    <ref name="e.dateSingle"/>
+                    <ref name="e.dateRange"/>
+                    <ref name="e.dateSet"/>
+                </choice>
+            </define>
+
+        </div>
+
+        <div a:documentation="Language">
+
+            <define name="e.language">
+                <element a:id="language" name="language">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <attribute a:id="languageCode" name="languageCode">
+                        <data type="string">
+                            <param name="pattern">[a-z]{3}</param>
+                        </data>
+                    </attribute>
+                    <text/>
+                </element>
+            </define>
+
+            <define name="e.script">
+                <element a:id="script" name="script">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <ref name="a.scriptCode"/>
+                    <text/>
+                </element>
+            </define>
+
+            <define name="a.scriptCode">
+                <attribute a:id="scriptCode" name="scriptCode">
+                    <data type="string">
+                        <param name="pattern">[A-Z][a-z]{3}</param>
+                    </data>
+                </attribute>
+            </define>
+
+
+            <define name="a.transliteration">
+                <attribute a:id="transliteration" name="transliteration">
+                    <data type="NMTOKEN"/>
+                </attribute>
+            </define>
+
+            <define name="m.entryLanguageAttributes">
+                <optional>
+                    <ref name="a.scriptCode"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="a.transliteration"/>
+                </optional>
+            </define>
+
+        </div>
+
+        <define name="m.data.standardRepository">
+            <data type="token">
+                <a:documentation>This pattern represents the character pattern requirements of ISIL
+                    (ISO 15511). Values that conform to the pattern are not, strictly speaking,
+                    conformant to ISIL, as all repository codes must be registered with a national
+                    authority and the national authority must be registered wth the official ISIL
+                    registering authority, the Royal Library of Belgium
+                    (http://biblstandard.dk/isil/).</a:documentation>
+                <param name="pattern"
+                    >(([A-Z]{2})|([a-zA-Z]{1})|([a-zA-Z]{3,4}))(-[a-zA-Z0-9:/\-]{1,11})</param>
+            </data>
+        </define>
+
+        <define name="e.term">
+            <element a:id="term" name="term">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="m.entryLanguageAttributes"/>
+                </optional>
+                <optional>
+                    <ref name="a.lastDateTimeVerified"/>
+                </optional>
+                <optional>
+                    <ref name="a.vocabularySource"/>
+                </optional>
+                <text/>
+            </element>
+        </define>
+
+        <define name="e.descriptiveNote">
+            <element a:id="descriptiveNote" name="descriptiveNote">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <oneOrMore>
+                    <ref name="e.p"/>
+                </oneOrMore>
+            </element>
+        </define>
+
+        <define name="e.citation">
+            <element a:id="citation" name="citation">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="simpleLink"/>
+                </optional>
+                <optional>
+                    <ref name="a.lastDateTimeVerified"/>
+                </optional>
+                <ref name="m.mixedContent"/>
+            </element>
+        </define>
+
+        <define name="m.id">
+            <optional>
+                <ref name="a.localType"/>
+            </optional>
+            <text/>
+        </define>
+
+        <define name="e.p">
+            <element a:id="p" name="p">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <ref name="m.mixedContent"/>
+            </element>
+        </define>
+
+        <define name="m.mixedContent">
+            <zeroOrMore>
+                <choice>
+                    <text/>
+                    <ref name="e.span"/>
+                </choice>
+            </zeroOrMore>
+        </define>
+
+        <define name="e.chronList">
+            <element a:id="chronList" name="chronList">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <oneOrMore>
+                    <element a:id="chronItem" name="chronItem">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <optional>
+                            <ref name="lang"/>
+                        </optional>
+                        <optional>
+                            <ref name="a.localType"/>
+                        </optional>
+                        <choice>
+                            <ref name="e.dateSingle"/>
+                            <ref name="e.dateRange"/>
+                        </choice>
+                        <optional>
+                            <ref name="e.placeEntry"/>
+                        </optional>
+                        <element a:id="event" name="event">
+                            <optional>
+                                <ref name="id"/>
+                            </optional>
+                            <optional>
+                                <ref name="lang"/>
+                            </optional>
+                            <optional>
+                                <ref name="a.localType"/>
+                            </optional>
+                            <text/>
+                        </element>
+                    </element>
+                </oneOrMore>
+            </element>
+        </define>
+
+        <define name="e.list">
+            <element a:id="list" name="list">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <oneOrMore>
+                    <ref name="e.item"/>
+                </oneOrMore>
+            </element>
+        </define>
+
+        <define name="e.item">
+            <element a:id="item" name="item">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <ref name="m.mixedContent"/>
+            </element>
+        </define>
+
+        <define name="e.outline">
+            <element a:id="outline" name="outline">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <oneOrMore>
+                    <ref name="e.level"/>
+                </oneOrMore>
+            </element>
+        </define>
+
+        <define name="e.level">
+            <element a:id="level" name="level">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <ref name="e.item"/>
+                <zeroOrMore>
+                    <ref name="e.level"/>
+                </zeroOrMore>
+            </element>
+        </define>
+
+        <define name="e.span">
+            <optional>
+                <element a:id="span" name="span">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.style"/>
+                    </optional>
+                    <text/>
+                </element>
+            </optional>
+        </define>
+
+        <define name="a.localType">
+            <attribute a:id="localType" name="localType">
+                <data type="anyURI"/>
+            </attribute>
+        </define>
+
+        <define name="a.vocabularySource">
+            <attribute a:id="vocabularySource" name="vocabularySource">
+                <data type="anyURI"/>
+            </attribute>
+        </define>
+
+        <define name="a.style">
+            <attribute a:id="style" name="style">
+                <text/>
+            </attribute>
+        </define>
+
+        <define name="m.geographicalCoordinates">
+            <attribute a:id="longitude" name="longitude">
+                <data type="NMTOKEN"/>
+            </attribute>
+            <attribute a:id="latitude" name="latitude">
+                <data type="NMTOKEN"/>
+            </attribute>
+            <optional>
+                <attribute a:id="altitude" name="altitude">
+                    <data type="NMTOKEN"/>
+                </attribute>
+            </optional>
+        </define>
+
+        <!-- XML general attributes -->
+        <div a:documentation="XML Special Attributes">
+
+            <define name="lang" ns="http://www.w3.org/XML/1998/namespace">
+                <attribute a:id="xmlLang" name="xml:lang">
+                    <choice>
+                        <data type="language"/>
+                        <value/>
+                    </choice>
+                </attribute>
+            </define>
+
+            <define name="base" ns="http://www.w3.org/XML/1998/namespace">
+                <attribute a:id="xmlBase" name="xml:base">
+                    <data type="anyURI"/>
+                </attribute>
+            </define>
+
+            <define name="id" ns="http://www.w3.org/XML/1998/namespace">
+                <attribute a:id="xmlID" name="xml:id">
+                    <data type="NCName">
+                        <!-- Because of restrictions in Relax NG, the expression of this attribute is NCName.
+This is not strictly conformant to the xml:id specification, though necessary in order for
+to validate. The XML Schema version of this attribute should be defined as ID -->
+                    </data>
+                </attribute>
+            </define>
+        </div>
+
+        <div a:documentation="XLINK">
+            <define name="simpleLink" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <attribute a:defaultValue="simple" a:id="xlinkType" name="xlink:type">
+                    <value>simple</value>
+                </attribute>
+                <optional>
+                    <ref name="href"/>
+                </optional>
+                <optional>
+                    <ref name="role"/>
+                </optional>
+                <optional>
+                    <ref name="arcrole"/>
+                </optional>
+                <optional>
+                    <ref name="title"/>
+                </optional>
+                <optional>
+                    <ref name="show"/>
+                </optional>
+                <optional>
+                    <ref name="actuate"/>
+                </optional>
+            </define>
+            <define name="href" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <attribute a:id="xlinkHref" name="xlink:href">
+                    <data type="anyURI"/>
+                </attribute>
+            </define>
+            <define name="role" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <attribute a:id="xlinkRole" name="xlink:role">
+                    <data type="anyURI"/>
+                </attribute>
+            </define>
+            <define name="arcrole" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <attribute a:id="xlinkArcrole" name="xlink:arcrole">
+                    <data type="anyURI"/>
+                </attribute>
+            </define>
+            <define name="title" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <attribute a:id="xlinkTitle" name="xlink:title"/>
+            </define>
+            <define name="show" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <attribute a:id="xlinkShow" name="xlink:show">
+                    <choice>
+                        <value>new</value>
+                        <value>replace</value>
+                        <value>embed</value>
+                        <value>other</value>
+                        <value>none</value>
+                    </choice>
+                </attribute>
+            </define>
+            <define name="actuate" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <attribute a:id="xlinkActuate" name="xlink:actuate">
+                    <choice>
+                        <value>onLoad</value>
+                        <value>onRequest</value>
+                        <value>other</value>
+                        <value>none</value>
+                    </choice>
+                </attribute>
+            </define>
+
+        </div>
+
+    </div>
+
+
+</grammar>
