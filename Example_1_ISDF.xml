@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="eac-f.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<eac-f xmlns="https://github.com/svassallo/EAC-F">
+    <control>
+        <recordId>TEST01</recordId>
+        <maintenanceStatus>revised</maintenanceStatus>
+        <maintenanceAgency>
+            <agencyName>University of Glasgow</agencyName>
+        </maintenanceAgency>
+        <languageDeclaration>
+            <language languageCode="eng">English</language>
+            <script scriptCode="Latn">Latin</script>
+        </languageDeclaration>
+        <maintenanceHistory>
+            <maintenanceEvent>
+                <eventType>revised</eventType>
+                <eventDateTime standardDateTime="2012-10-16">Just now ;-)</eventDateTime>
+                <agentType>human</agentType>
+                <agent>Salvatore Vassallo</agent>
+                <eventDescription>Conversion of first ISDF example into EAC-F schema</eventDescription>
+            </maintenanceEvent>
+            <maintenanceEvent>
+                <eventType>revised</eventType>
+                <eventDateTime standardDateTime="2007"/>
+                <agentType>human</agentType>
+                <agent>Victoria Peters</agent>
+                <eventDescription>Description prepared and revised by Victoria Peters, Glasgow University
+                    Archive Services</eventDescription>
+            </maintenanceEvent>
+            <maintenanceEvent>
+                <eventType>created</eventType>
+                <eventDateTime standardDateTime="2006"/>
+                <agentType>human</agentType>
+                <agent>Victoria Peters</agent>
+            </maintenanceEvent>
+        </maintenanceHistory>
+        <sources>
+            <source>
+                <sourceEntry>University of Glasgow Court minutes</sourceEntry>
+            </source>
+            <source>
+                <sourceEntry>
+                    Glasgow University Graduates Association minutes and annual reports</sourceEntry>
+            </source>
+            <source xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gla.ac.uk">
+                <sourceEntry>University of Glasgow website</sourceEntry>
+            </source>
+        </sources>
+    </control>
+    <fDescription>
+        <identity>
+            <entityId>C0740-F012-007</entityId>
+            <entityType>Activity</entityType>
+            <nameEntry>
+                <part>Alumni communication management, University of Glasgow</part>
+            </nameEntry>
+        </identity>
+        <description>
+            <durationDates>
+                <dateRange>
+                    <fromDate standardDate="1868">1868 - </fromDate>
+                    <toDate>ongoing</toDate>
+                </dateRange>
+            </durationDates>
+            <purpose>
+                <p>The management of the University’s communications with its alumni.</p>
+            </purpose>
+            <history>
+                <abstract>Yada yada yada (but short ;-))</abstract>
+                <chronList>
+                    <chronItem>
+                        <dateSingle standardDate="1868">1868</dateSingle>
+                        <event>The General Council handled communications with alumni</event>
+                    </chronItem>
+                    <chronItem>
+                        <dateSingle standardDate="1990">1990</dateSingle>
+                        <event>The Development Campaign Office was
+                            established to co-ordinate the University's newly launched development
+                            campaign and to communicate with alumni regarding fund raising</event>
+                    </chronItem>
+                </chronList>
+                <p>
+                    From 1868, when the membership of the University’s General Council was
+                    expanded to include all graduates of the University, the General Council
+                    handled communications with alumni, including balloting them for the
+                    election of the Chancellor. In 1990, the Development Campaign Office was
+                    established to co-ordinate the University's newly launched development
+                    campaign and to communicate with alumni regarding fund raising. In about
+                    1998, the Development and Alumni Office was established to perform both
+                    these functions. Within the Development and Alumni Office, the Alumni
+                    Relations Officer was responsible for dealing with queries from and about
+                    alumni and ensuring that good relations were maintained between the
+                    University and its alumni, and the Development Campaign Officer was
+                    responsible for fostering links with alumni and raising funds on behalf of the
+                    University.
+                </p>
+                <p>
+                    In 1948, the Glasgow University Graduates Association was formed to
+                    maintain closer contact between the University and its graduates. It published
+                    a magazine, known as the College Courant, which included reminiscences,
+                    histories, obituaries and articles concerning education and other topics and
+                    became the main means of communication between the graduates. The
+                    Glasgow University Graduates Association ceased to exist in 1985 but the
+                    University agreed to continue with the publication of a magazine for
+                    graduates. Accordingly, from 1987, it published a free, twice-yearly
+                    magazine for alumni and friends of the University, known as Avenue.
+                </p>
+            </history>
+        </description>
+    </fDescription>
+</eac-f>
