@@ -790,9 +790,11 @@ code may be a non-conforming, i.e. otherAgencyCode -->
     <!-- Relations -->
     <div a:documentation="relations">
         <define a:id="e.relations" name="e.relations">
-            <oneOrMore>
-                <ref name="e.relation"/>
-            </oneOrMore>
+            <element name="relations">
+                <oneOrMore>
+                    <ref name="e.relation"/>
+                </oneOrMore>
+            </element>
         </define>
 
         <define name="e.relation">
