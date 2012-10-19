@@ -799,7 +799,6 @@ code may be a non-conforming, i.e. otherAgencyCode -->
 
         <define name="e.relation">
             <element name="relation">
-                <optional>
                     <attribute name="relationType">
                         <choice>
                         <value>cpf</value>
@@ -807,7 +806,7 @@ code may be a non-conforming, i.e. otherAgencyCode -->
                         <value>resource</value>
                         </choice>
                     </attribute>
-                </optional>
+                
                 <optional>
                     <ref name="a.lastDateTimeVerified"/>
                 </optional>
