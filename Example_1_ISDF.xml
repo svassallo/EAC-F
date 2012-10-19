@@ -107,5 +107,32 @@
                 </p>
             </history>
         </description>
+        <relations>
+            <relation relationType="function" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:role="function">
+                <relationEntry>Alumni relations management, University of Glasgow (C0740-F012)</relationEntry>
+                <dateRange>
+                    <fromDate standardDate="1868">From 1868 - present</fromDate>
+                </dateRange>
+            </relation>
+            <relation relationType="function" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:role="activity">
+                <relationEntry>Alumni data administration, University of Glasgow (C0740-F012-006)</relationEntry>
+                <dateRange>
+                    <fromDate standardDate="1868">From 1868 - present</fromDate>
+                </dateRange>
+            </relation>
+            <relation relationType="cpf" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="performing" xlink:role="corporateBody">
+                <relationEntry>University of Glasgow (C0740)</relationEntry>
+                <dateRange>
+                    <fromDate standardDate="1868">From 1868 - present</fromDate>
+                </dateRange>                
+            </relation>
+            <relation relationType="resource" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:arcrole="recordCreated">
+                <relationEntry>General Council correspondence with graduates (GB 0248 DC 183/6/16)</relationEntry>
+                <dateRange>
+                    <fromDate standardDate="1959">From 1959</fromDate>
+                    <toDate standardDate="1981">to 1981</toDate>
+                </dateRange>         
+            </relation>
+        </relations>
     </fDescription>
 </eac-f>
