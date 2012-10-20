@@ -8,7 +8,6 @@ This schema is mainly based on EAC-CPF one, see http://eac.staatsbibliothek-berl
 TODO:
 * classification
 * dates as in EAD (latest proposal)
-* relations
 * alternative set
 
 
@@ -370,11 +369,10 @@ TODO:
             <optional>
                 <ref name="e.description"/>
             </optional>
-            <!--
             <optional>
                 <ref name="e.relations"/>
             </optional>
-            
+            <!--
             <optional>
                 <ref name="e.alternativeSet"/>
             </optional> -->
@@ -789,6 +787,63 @@ code may be a non-conforming, i.e. otherAgencyCode -->
         </div>
     </div>
 
+    <!-- Relations -->
+    <div a:documentation="relations">
+        <define a:id="e.relations" name="e.relations">
+            <element name="relations">
+                <oneOrMore>
+                    <ref name="e.relation"/>
+                </oneOrMore>
+            </element>
+        </define>
+
+        <define name="e.relation">
+            <element name="relation">
+                    <attribute name="relationType">
+                        <choice>
+                        <value>cpf</value>
+                        <value>function</value>
+                        <value>resource</value>
+                        </choice>
+                    </attribute>
+                
+                <optional>
+                    <ref name="a.lastDateTimeVerified"/>
+                </optional>
+                <optional>
+                    <ref name="simpleLink"/>
+                </optional>
+                <oneOrMore>
+                    <ref name="e.relationEntry"/>
+                </oneOrMore>
+
+                <optional>
+                    <ref name="m.dates"/>
+                </optional>
+                <optional>
+                    <ref name="e.placeEntry"/>
+                </optional>
+                <optional>
+                    <ref name="e.descriptiveNote"/>
+                </optional>
+            </element>
+        </define>
+
+        <define name="e.relationEntry">
+            <element a:id="relationEntry" name="relationEntry">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="m.entryLanguageAttributes"/>
+                </optional>
+                <optional>
+                    <ref name="a.localType"/>
+                </optional>
+                <text/>
+            </element>
+        </define>
+    </div>
 
     <!-- Shared -->
     <div a:documentation="Shared">
