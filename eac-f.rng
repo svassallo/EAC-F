@@ -1,15 +1,8 @@
-<!-- Version 0.2 Salvatore Vassallo
+<!-- Version 0.9 Salvatore Vassallo
 
 First attemp to create a schema to encode function conforms to ISDF.
 
 This schema is mainly based on EAC-CPF one, see http://eac.staatsbibliothek-berlin.de
-
-
-TODO:
-* classification
-* dates as in EAD (latest proposal)
-* alternative set
-
 
 -->
 
@@ -348,10 +341,7 @@ TODO:
                 </oneOrMore>
             </element>
         </define>
-
     </div>
-
-
 
     <!-- fDescription section -->
     <define name="e.fDescription">
@@ -372,10 +362,9 @@ TODO:
             <optional>
                 <ref name="e.relations"/>
             </optional>
-            <!--
             <optional>
                 <ref name="e.alternativeSet"/>
-            </optional> -->
+            </optional>
         </element>
     </define>
 
@@ -431,7 +420,15 @@ TODO:
                         </element>
                     </choice>
                 </oneOrMore>
-                <!-- TODO add classification -->
+                <!-- Classification: zeroOrMore? which attributes? -->
+                <optional>
+                    <element name="classification">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <ref name="m.id"/>
+                    </element>
+                </optional>
                 <optional>
                     <ref name="e.descriptiveNote"/>
                 </optional>
@@ -845,6 +842,57 @@ code may be a non-conforming, i.e. otherAgencyCode -->
         </define>
     </div>
 
+    <!-- alternativeSet -->
+    <div a:documentation="alternativeSet">        
+        <define name="e.alternativeSet">
+            <element a:id="alternativeSet" name="alternativeSet">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="base"/>
+                </optional>
+                <oneOrMore>
+                    <element a:id="setComponent" name="setComponent">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <optional>
+                            <ref name="lang"/>
+                        </optional>
+                        <optional>
+                            <ref name="a.lastDateTimeVerified"/>
+                        </optional>
+                        <!-- Here down overlaps with m.relationBody -->
+                        <optional>
+                            <ref name="simpleLink"/>
+                        </optional>
+                        <oneOrMore>
+                            <element a:id="componentEntry" name="componentEntry">
+                                <optional>
+                                    <ref name="id"/>
+                                </optional>
+                                <optional>
+                                    <ref name="a.localType"/>
+                                </optional>
+                                <optional>
+                                    <ref name="m.entryLanguageAttributes"/>
+                                </optional>
+                                <text/>
+                            </element>
+                        </oneOrMore>
+                        <optional>
+                            <ref name="e.descriptiveNote"/>
+                        </optional>
+                    </element>
+                </oneOrMore>
+            </element>
+        </define>
+    </div>
+
     <!-- Shared -->
     <div a:documentation="Shared">
         <div a:documentation="Dates">
@@ -871,7 +919,22 @@ code may be a non-conforming, i.e. otherAgencyCode -->
                     <data type="gYearMonth"/>
                 </choice>
             </define>
-
+            
+            <define name="e.dateUnstructured">
+                <element a:id="dateUnstructured" name="dateUnstructured">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <text/>
+                </element>
+            </define>
+            
             <define name="e.dateSingle">
                 <element a:id="dateSingle" name="dateSingle">
                     <optional>
@@ -968,6 +1031,7 @@ code may be a non-conforming, i.e. otherAgencyCode -->
 
             <define name="m.dates">
                 <choice>
+                    <ref name="e.dateUnstructured"/>
                     <ref name="e.dateSingle"/>
                     <ref name="e.dateRange"/>
                     <ref name="e.dateSet"/>
