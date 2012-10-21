@@ -6,7 +6,6 @@ This schema is mainly based on EAC-CPF one, see http://eac.staatsbibliothek-berl
 
 
 TODO:
-* classification
 * alternative set
 
 
@@ -430,7 +429,15 @@ TODO:
                         </element>
                     </choice>
                 </oneOrMore>
-                <!-- TODO add classification -->
+                <!-- Classificatione: zeroOrMore? which attributes? -->
+                <optional>
+                    <element name="classification">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <ref name="m.id"/>
+                    </element>
+                </optional>
                 <optional>
                     <ref name="e.descriptiveNote"/>
                 </optional>
