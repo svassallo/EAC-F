@@ -7,7 +7,6 @@ This schema is mainly based on EAC-CPF one, see http://eac.staatsbibliothek-berl
 
 TODO:
 * classification
-* dates as in EAD (latest proposal)
 * alternative set
 
 
@@ -871,7 +870,22 @@ code may be a non-conforming, i.e. otherAgencyCode -->
                     <data type="gYearMonth"/>
                 </choice>
             </define>
-
+            
+            <define name="e.dateUnstructured">
+                <element a:id="dateUnstructured" name="dateUnstructured">
+                    <optional>
+                        <ref name="id"/>
+                    </optional>
+                    <optional>
+                        <ref name="lang"/>
+                    </optional>
+                    <optional>
+                        <ref name="a.localType"/>
+                    </optional>
+                    <text/>
+                </element>
+            </define>
+            
             <define name="e.dateSingle">
                 <element a:id="dateSingle" name="dateSingle">
                     <optional>
@@ -968,6 +982,7 @@ code may be a non-conforming, i.e. otherAgencyCode -->
 
             <define name="m.dates">
                 <choice>
+                    <ref name="e.dateUnstructured"/>
                     <ref name="e.dateSingle"/>
                     <ref name="e.dateRange"/>
                     <ref name="e.dateSet"/>
