@@ -346,10 +346,7 @@ TODO:
                 </oneOrMore>
             </element>
         </define>
-
     </div>
-
-
 
     <!-- fDescription section -->
     <define name="e.fDescription">
@@ -370,10 +367,9 @@ TODO:
             <optional>
                 <ref name="e.relations"/>
             </optional>
-            <!--
             <optional>
                 <ref name="e.alternativeSet"/>
-            </optional> -->
+            </optional>
         </element>
     </define>
 
@@ -429,7 +425,7 @@ TODO:
                         </element>
                     </choice>
                 </oneOrMore>
-                <!-- Classificatione: zeroOrMore? which attributes? -->
+                <!-- Classification: zeroOrMore? which attributes? -->
                 <optional>
                     <element name="classification">
                         <optional>
@@ -847,6 +843,57 @@ code may be a non-conforming, i.e. otherAgencyCode -->
                     <ref name="a.localType"/>
                 </optional>
                 <text/>
+            </element>
+        </define>
+    </div>
+
+    <!-- alternativeSet -->
+    <div a:documentation="alternativeSet">        
+        <define name="e.alternativeSet">
+            <element a:id="alternativeSet" name="alternativeSet">
+                <optional>
+                    <ref name="id"/>
+                </optional>
+                <optional>
+                    <ref name="lang"/>
+                </optional>
+                <optional>
+                    <ref name="base"/>
+                </optional>
+                <oneOrMore>
+                    <element a:id="setComponent" name="setComponent">
+                        <optional>
+                            <ref name="id"/>
+                        </optional>
+                        <optional>
+                            <ref name="lang"/>
+                        </optional>
+                        <optional>
+                            <ref name="a.lastDateTimeVerified"/>
+                        </optional>
+                        <!-- Here down overlaps with m.relationBody -->
+                        <optional>
+                            <ref name="simpleLink"/>
+                        </optional>
+                        <oneOrMore>
+                            <element a:id="componentEntry" name="componentEntry">
+                                <optional>
+                                    <ref name="id"/>
+                                </optional>
+                                <optional>
+                                    <ref name="a.localType"/>
+                                </optional>
+                                <optional>
+                                    <ref name="m.entryLanguageAttributes"/>
+                                </optional>
+                                <text/>
+                            </element>
+                        </oneOrMore>
+                        <optional>
+                            <ref name="e.descriptiveNote"/>
+                        </optional>
+                    </element>
+                </oneOrMore>
             </element>
         </define>
     </div>
